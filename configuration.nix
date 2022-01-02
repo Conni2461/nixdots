@@ -3,14 +3,16 @@
   imports =
     [
       ./hardware-configuration.nix
+      ./uefi.nix
       ./nvidia.nix
       ./pipewire.nix
       ./dwm.nix
     ];
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.extraModulePackages = [
+    config.boot.kernelPackages.rtl88x2bu
+  ];
 
   networking.hostName = "nixos";
   networking.networkmanager.enable = true;
@@ -227,15 +229,11 @@
 
   fonts = {
     enableDefaultFonts = true;
+    enableGhostscriptFonts = true;
+    fontDir.enable = true;
     fonts = with pkgs; [
       (nerdfonts.override { fonts = [ "FiraCode" ]; })
     ];
-
-    fontconfig = {
-      defaultFonts = {
-        monospace = [ "FiraCode Nerd Font Mono" ];
-      };
-    };
   };
 
   system.stateVersion = "21.11";
