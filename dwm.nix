@@ -61,11 +61,6 @@
   environment.systemPackages = with pkgs; let
     rdq = writeShellScriptBin "rdq" ''
       #!/bin/sh
-      # A dmenu binary prompt script.
-      # Gives a dmenu prompt labeled with $1 to perform command $2.
-      # For example:
-      # ./prompt "Do you want to shutdown?" "shutdown -h now"
-
       prompt="$1"
       shift
       com="$1"

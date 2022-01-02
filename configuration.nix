@@ -190,6 +190,7 @@
       isync
       msmtp
       pass
+      lynx
     ];
     extraInit = ''
       xset r rate 300 50
