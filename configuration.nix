@@ -20,19 +20,14 @@
   nixpkgs.config.allowUnfree = true;
   nixpkgs.overlays = [
     (self: super: {
-      dwm = super.dwm.overrideAttrs (_: {
+      dwm = super.dwm.overrideAttrs (oldAttrs: rec {
         src = super.fetchFromGitHub {
           owner = "conni2461";
           repo = "dwm";
-          rev = "d890c400ccf24239107a53a47bf4244b9f97137e";
-          sha256 = "sha256:0hdvda7yv156jyf45rm5k836s5myjwspbayz3igqkkzqd6aqkmwp";
+          rev = "60c5d4c54a0a5c1b962150ffdb2a5e36ee7a5e58";
+          sha256 = "sha256:1f4czbq5x9fnds0xx5j9wah8aivv3xkz76vsk6wa30i5ggcficw3";
         };
-        buildInputs = with pkgs; [
-          xorg.libX11
-          xorg.libXinerama
-          xorg.libXft
-          xorg.libXext
-        ];
+        buildInputs = with pkgs; oldAttrs.buildInputs ++ [ xorg.libXext ];
       });
       dmenu = super.dmenu.overrideAttrs (_: {
         src = super.fetchFromGitHub {
@@ -42,33 +37,43 @@
           sha256 = "sha256:1m16vyq71wkky2cjy8438izhri6yykh0wfxvdzr751srzaz6fi7i";
         };
       });
-      st = super.st.overrideAttrs (_: {
+      st = super.st.overrideAttrs (oldAttrs: rec {
         src = super.fetchFromGitHub {
           owner = "conni2461";
           repo = "st";
-          rev = "f1b17d129c75debb2090505e654396ec50335ed5";
-          sha256 = "sha256:02ly9q8cjqm14sbv4nfwq67x7z8s940ycnasf7mgyzxk4v959dvj";
+          rev = "7db3c660abe124ac50cd3c5cc2a1dc5fd28cd14e";
+          sha256 = "sha256:0ryg69mvwdnc634c6ysv58rca1qm2q1k77h59vvymbk65fiyrjzs";
         };
+        buildInputs = with pkgs; oldAttrs.buildInputs ++ [ harfbuzz ];
       });
-      slock = super.slock.overrideAttrs (_: {
+      slock = super.slock.overrideAttrs (oldAttrs: rec {
         src = super.fetchFromGitHub {
           owner = "conni2461";
           repo = "slock";
           rev = "bded8aa5889386c68ad9ab0b40f0ca7d905c3046";
           sha256 = "sha256:0ya0fiv7i8asb2r0qcqgrxyb0xm48lwbvqh14jx10mhv1g3ds493";
         };
-        buildInputs = with pkgs; [
-          xorg.libX11
+        buildInputs = with pkgs; oldAttrs.buildInputs ++ [
           xorg.libXinerama
-          xorg.libXext
-          xorg.libXrandr
-          xorg.xorgproto
           imlib2
         ];
       });
     })
+    (import (builtins.fetchTarball {
+      url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
+    }))
   ];
 
+  hardware.opengl = {
+    enable = true;
+    extraPackages = with pkgs; [
+      vaapiIntel
+      vaapiVdpau
+      libvdpau-va-gl
+    ];
+    setLdLibraryPath = true;
+    driSupport32Bit = true;
+  };
   hardware.pulseaudio.enable = false;
   services = {
     xserver = {
@@ -78,9 +83,19 @@
       xkbModel = "pc105";
       xkbVariant = "nodeadkeys";
       displayManager.lightdm.enable = true;
+      displayManager.defaultSession = "none+dwm";
       displayManager.startx.enable = true;
       windowManager.dwm.enable = true;
+      desktopManager.plasma5.enable = true;
       xkbOptions = "caps:escape";
+      serverLayoutSection = ''
+        Option         "Xinerama" "0"
+      '';
+      screenSection = ''
+        Option         "nvidiaXineramaInfoOrder" "DFP-1"
+        Option         "metamodes" "HDMI-0: 1920x1080 +0+360 {ForceCompositionPipeline=On}, DP-0: 2560x1440 +1920+0 {ForceCompositionPipeline=On}"
+        Option         "AllowIndirectGLXProtocol" "off"
+      '';
     };
     ratbagd.enable = true;
     pipewire = {
@@ -94,6 +109,7 @@
     };
   };
   security.rtkit.enable = true;
+  systemd.services.display-manager.restartIfChanged = false;
 
   virtualisation.docker.enable = true;
 
@@ -130,6 +146,8 @@
       lsof
 
       pciutils
+      dunst
+      libnotify
 
       jq
       docker-compose
@@ -149,7 +167,8 @@
       grc
 
       ctags
-      unstable.neovim
+      # unstable.neovim
+      neovim-nightly
 
       # kbd
       tmux
@@ -168,25 +187,44 @@
       ncdu
       nix-index
 
+      texlive.combined.scheme-medium
+      texlab
+
       go
+      unstable.insomnia
+
+      (python3.withPackages (ps: with ps; [
+        flake8
+        pylint
+        ipython
+        requests
+        compiledb
+      ]))
       poetry
       black
       pyright
-      unstable.insomnia
 
       gcc
       gnumake
       gdb
+      clang
       clang-tools
+      llvm
       valgrind
       autoconf
       autoconf-archive
 
+      unstable.rustc
+      unstable.rustfmt
+      unstable.cargo
+      cargo-watch
+      clippy
       unstable.rust-analyzer
       rnix-lsp
 
       nodejs
       yarn
+      nodePackages.node2nix
 
       sqlite
       sqlitebrowser
@@ -209,8 +247,9 @@
       gopass
 
       unstable.discord
-      steam
       firefox
+      spotify
+      playerctl
       mpv
       obs-studio
       (pkgs.xfce.thunar.override { thunarPlugins = [ pkgs.xfce.thunar-archive-plugin ]; })
@@ -218,7 +257,7 @@
       gnome.adwaita-icon-theme
       zathura
       piper
-      steam
+      newsboat
 
       pulsemixer
       pavucontrol
@@ -229,11 +268,18 @@
       flameshot
       feh
       xclip
+      numlockx
       arandr
 
       # nextcloud-client
       libreoffice
       thunderbird
+
+      neomutt
+      mutt-wizard
+      isync
+      msmtp
+      pass
 
       pulseaudio.out
       rdq
@@ -249,10 +295,12 @@
   programs = {
     light.enable = true;
     slock.enable = true;
+    steam.enable = true;
     gnupg.agent = {
       enable = true;
       pinentryFlavor = "tty";
     };
+    ssh.startAgent = true;
     zsh = {
       enable = true;
       shellAliases = {
@@ -276,6 +324,7 @@
   };
 
   fonts = {
+    enableDefaultFonts = true;
     fonts = with pkgs; [
       (nerdfonts.override { fonts = [ "FiraCode" ]; })
     ];
