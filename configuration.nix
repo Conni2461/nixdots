@@ -34,7 +34,6 @@
   services = {
     xserver = {
       enable = true;
-      desktopManager.plasma5.enable = true;
     };
     ratbagd.enable = true;
   };
@@ -81,7 +80,6 @@
       grc
 
       ctags
-      # unstable.neovim
       neovim-nightly
 
       # kbd
@@ -118,14 +116,14 @@
       black
       pyright
 
-      unstable.gcc
+      gcc11
       gnumake
       unstable.cmake
       gdb
-      unstable.clang
-      unstable.clang-tools
-      unstable.llvm
-      unstable.valgrind
+      clang_13
+      clang-tools
+      llvm
+      valgrind
       autoconf
       autoconf-archive
 
@@ -229,11 +227,22 @@
 
   fonts = {
     enableDefaultFonts = true;
-    enableGhostscriptFonts = true;
-    fontDir.enable = true;
     fonts = with pkgs; [
+      dejavu_fonts
+      noto-fonts-emoji
       (nerdfonts.override { fonts = [ "FiraCode" ]; })
     ];
+    fontconfig = {
+      enable = true;
+      defaultFonts = {
+        emoji = [
+          "Noto Color Emoji"
+        ];
+        monospace = [
+          "FiraCode Nerd Font Mono"
+        ];
+      };
+    };
   };
 
   system.stateVersion = "21.11";
