@@ -1,15 +1,13 @@
 { pkgs, ... }:
 {
   hardware.pulseaudio.enable = false;
-  services = {
-    pipewire = {
+  services.pipewire = {
+    enable = true;
+    pulse.enable = true;
+    jack.enable = true;
+    alsa = {
       enable = true;
-      pulse.enable = true;
-      jack.enable = true;
-      alsa = {
-        enable = true;
-        support32Bit = true;
-      };
+      support32Bit = true;
     };
   };
   security.rtkit.enable = true;
