@@ -81,6 +81,10 @@
 
       ctags
       neovim-nightly
+      luajit
+      luajitPackages.luacheck
+      unstable.stylua
+      sumneko-lua-language-server
 
       # kbd
       tmux
