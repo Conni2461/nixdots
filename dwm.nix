@@ -6,8 +6,8 @@
         src = super.fetchFromGitHub {
           owner = "conni2461";
           repo = "dwm";
-          rev = "60c5d4c54a0a5c1b962150ffdb2a5e36ee7a5e58";
-          sha256 = "sha256:1f4czbq5x9fnds0xx5j9wah8aivv3xkz76vsk6wa30i5ggcficw3";
+          rev = "589de2857762ec15d619da83bffbe80aa4e6dc05";
+          sha256 = "sha256:1hvv3kd9akq7l6sf0h8bhiq0n6wny95dr35s45zpfwv1by5la43s";
         };
         buildInputs = with pkgs; oldAttrs.buildInputs ++ [ xorg.libXext ];
       });
@@ -23,8 +23,8 @@
         src = super.fetchFromGitHub {
           owner = "conni2461";
           repo = "st";
-          rev = "7db3c660abe124ac50cd3c5cc2a1dc5fd28cd14e";
-          sha256 = "sha256:0ryg69mvwdnc634c6ysv58rca1qm2q1k77h59vvymbk65fiyrjzs";
+          rev = "b4ee37c2af469b5f03beae3ddce674c9ca0933de";
+          sha256 = "sha256:01z7qgni59c7pqcjd9gdz0bcrrdgiby4fzn4w9x48caqg4b9f94w";
         };
         buildInputs = with pkgs; oldAttrs.buildInputs ++ [ harfbuzz ];
       });
