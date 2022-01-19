@@ -5,6 +5,7 @@
       ./hardware-configuration.nix
       ./uefi.nix
       ./nvidia.nix
+      ./bluetooth.nix
       ./pipewire.nix
       ./dwm.nix
     ];
