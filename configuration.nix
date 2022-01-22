@@ -33,9 +33,8 @@
   };
 
   services = {
-    xserver = {
-      enable = true;
-    };
+    xserver.enable = true;
+    gnome.gnome-keyring.enable = true;
     ratbagd.enable = true;
   };
 
@@ -186,7 +185,7 @@
       numlockx
       arandr
 
-      # nextcloud-client
+      nextcloud-client
       libreoffice
       thunderbird
 
