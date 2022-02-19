@@ -8,6 +8,7 @@
       ./bluetooth.nix
       ./pipewire.nix
       ./dwm.nix
+      ./news.nix
     ];
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
