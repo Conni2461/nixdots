@@ -1,4 +1,7 @@
-{ config, pkgs, lib, fetchFromGitHub, ... }:
+{ flake, config, pkgs, lib, fetchFromGitHub, ... }:
+let
+  isAtLeast24 = pkg: lib.versionAtLeast (lib.versions.majorMinor pkg.version) "2.4";
+in
 {
   imports =
     [
@@ -9,6 +12,7 @@
       ./pipewire.nix
       ./dwm.nix
       ./news.nix
+      ./mail.nix
     ];
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -24,17 +28,41 @@
   networking.useDHCP = false;
   networking.interfaces.eno1.useDHCP = true;
 
+  nix = {
+    buildCores = 0;
+    useSandbox = true;
+    gc = {
+      automatic = lib.mkDefault true;
+      options = lib.mkDefault "--delete-older-than 14d";
+    };
+    trustedUsers = [ "@wheel" "root" ];
+    # For the hardened profile
+    allowedUsers = [ "@users" ];
+    # https://github.com/NixOS/nix/issues/719
+    extraOptions = ''
+      gc-keep-outputs = true
+      gc-keep-derivations = true
+      ${lib.optionalString (isAtLeast24 pkgs.nix || isAtLeast24 config.nix.package)
+        "experimental-features = nix-command flakes"
+      }
+    '';
+  };
   nixpkgs = {
-    config.allowUnfree = true;
-    overlays = [
-      (import (builtins.fetchTarball {
-        url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
-      }))
-    ];
+    config = {
+      allowUnfree = true;
+    };
+    overlays = lib.mkBefore (import ./pkgs { inherit flake; });
   };
 
   services = {
-    xserver.enable = true;
+    xserver = {
+      enable = true;
+      xautolock = {
+        enable = true;
+        time = 10;
+        locker = "${pkgs.slock}/bin/slock";
+      };
+    };
     gnome.gnome-keyring.enable = true;
     ratbagd.enable = true;
   };
@@ -163,7 +191,6 @@
     nodePackages.typescript-language-server
     nodePackages.vim-language-server
     nodePackages.yaml-language-server
-    unstable.nodePackages.intelephense
     shellcheck
 
     gnupg
@@ -192,14 +219,6 @@
     arandr
 
     nextcloud-client
-
-    neomutt
-    mutt-wizard
-    notmuch
-    isync
-    msmtp
-    pass
-    lynx
   ];
 
   documentation = {
