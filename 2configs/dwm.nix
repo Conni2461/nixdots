@@ -52,7 +52,7 @@
       xkbVariant = "nodeadkeys";
       displayManager.lightdm.enable = true;
       displayManager.defaultSession = "none+dwm";
-      displayManager.startx.enable = false;
+      displayManager.startx.enable = true;
       windowManager.dwm.enable = true;
       xkbOptions = "caps:escape";
     };

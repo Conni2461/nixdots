@@ -1,14 +1,12 @@
 { pkgs, ... }:
 {
-  hardware.opengl = {
-    enable = true;
-    extraPackages = with pkgs; [
-      vaapiIntel
-      vaapiVdpau
-      libvdpau-va-gl
-    ];
-    setLdLibraryPath = true;
-    driSupport32Bit = true;
+  hardware = {
+    nvidia.powerManagement.enable = true;
+    opengl = {
+      enable = true;
+      setLdLibraryPath = true;
+      driSupport32Bit = true;
+    };
   };
   services = {
     xserver = {

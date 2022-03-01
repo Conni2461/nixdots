@@ -5,14 +5,14 @@ in
 {
   imports =
     [
-      ./hardware-configuration.nix
-      ./uefi.nix
-      ./nvidia.nix
-      ./bluetooth.nix
-      ./pipewire.nix
-      ./dwm.nix
-      ./news.nix
-      ./mail.nix
+      ./1systems/hardware-configuration.nix
+      ./1systems/uefi.nix
+      ./1systems/nvidia.nix
+      ./1systems/pipewire.nix
+      ./1systems/bluetooth.nix
+      ./2configs/dwm.nix
+      ./3modules/news.nix
+      ./3modules/mail.nix
     ];
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -51,7 +51,7 @@ in
     config = {
       allowUnfree = true;
     };
-    overlays = lib.mkBefore (import ./pkgs { inherit flake; });
+    overlays = lib.mkBefore (import ./4pkgs { inherit flake; });
   };
 
   services = {
@@ -101,6 +101,7 @@ in
     util-linux
     fd
     ripgrep
+    fzf
     skim
     exa
     delta
