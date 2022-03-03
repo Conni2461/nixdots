@@ -5,6 +5,7 @@
     opengl = {
       enable = true;
       setLdLibraryPath = true;
+      driSupport = true;
       driSupport32Bit = true;
     };
   };

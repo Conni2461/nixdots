@@ -15,18 +15,22 @@ in
       ./3modules/mail.nix
     ];
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.extraModulePackages = [
-    config.boot.kernelPackages.rtl88x2bu
-  ];
+  boot = {
+    cleanTmpDir = true;
+    kernelPackages = pkgs.linuxPackages_latest;
+    extraModulePackages = [
+      config.boot.kernelPackages.rtl88x2bu
+    ];
+  };
 
-  networking.hostName = "nixos";
-  networking.networkmanager.enable = true;
+  networking = {
+    hostName = "nixos";
+    networkmanager.enable = true;
+    useDHCP = false;
+    interfaces.eno1.useDHCP = true;
+  };
 
   time.timeZone = "Europe/Berlin";
-
-  networking.useDHCP = false;
-  networking.interfaces.eno1.useDHCP = true;
 
   nix = {
     buildCores = 0;
@@ -166,24 +170,11 @@ in
     autoconf
     autoconf-archive
 
-    unstable.rustc
-    unstable.rustfmt
-    unstable.cargo
-    cargo-watch
-    clippy
-    unstable.rust-analyzer
-    rnix-lsp
-
-    nodejs
-    yarn
-    nodePackages.node2nix
-
     sqlite
     sqlitebrowser
 
     nixpkgs-fmt
-    phpPackages.php-cs-fixer
-
+    rnix-lsp
     nodePackages.bash-language-server
     nodePackages.prettier
     nodePackages.vscode-css-languageserver-bin
@@ -209,6 +200,7 @@ in
     gnome.adwaita-icon-theme
     zathura
     piper
+    mangohud
 
     xdg-utils
     sxiv
@@ -232,6 +224,10 @@ in
 
   programs = {
     steam.enable = true;
+    gamemode = {
+      enable = true;
+      settings.general.inhibit_screensaver = 0;
+    };
     gnupg.agent = {
       enable = true;
       pinentryFlavor = "tty";
