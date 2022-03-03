@@ -11,6 +11,20 @@
       ${pkgs.libnotify}/bin/notify-send "Updating RSS feeds..."
       ${pkgs.newsboat}/bin/newsboat -x reload
       rm -f ~/.config/newsboat/.update
+
+      feeds=$(${pkgs.sqlite}/bin/sqlite3 ~/.local/share/newsboat/cache.db "SELECT rss_feed.title FROM rss_feed;")
+      IFS='
+      '
+      for feed in $feeds; do
+        ${pkgs.sqlite}/bin/sqlite3 ~/.local/share/newsboat/cache.db \
+            "DELETE FROM rss_item WHERE id IN (
+               SELECT id FROM rss_item
+               WHERE feedurl = \"$feed\"
+               ORDER BY rss_item.pubDate
+               DESC LIMIT -1 OFFSET 100
+             );
+            "
+      done
       ${pkgs.libnotify}/bin/notify-send "RSS feed update complete."
     '';
   };
