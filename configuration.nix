@@ -175,6 +175,7 @@ in
 
     nixpkgs-fmt
     rnix-lsp
+    rust-analyzer
     nodePackages.bash-language-server
     nodePackages.prettier
     nodePackages.vscode-css-languageserver-bin
