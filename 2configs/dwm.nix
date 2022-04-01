@@ -6,10 +6,9 @@
         src = super.fetchFromGitHub {
           owner = "conni2461";
           repo = "dwm";
-          rev = "589de2857762ec15d619da83bffbe80aa4e6dc05";
-          sha256 = "sha256:1hvv3kd9akq7l6sf0h8bhiq0n6wny95dr35s45zpfwv1by5la43s";
+          rev = "26ee48f07290bb72fa61543c40df47472f574fe8";
+          sha256 = "sha256:0ck20134q7gk0xflabhzcfnkz35avr51r8rn8ajrabj1bb4px428";
         };
-        buildInputs = with pkgs; oldAttrs.buildInputs ++ [ xorg.libXext ];
       });
       dmenu = super.dmenu.overrideAttrs (_: {
         src = super.fetchFromGitHub {
