@@ -1,4 +1,4 @@
-{ flake, config, pkgs, lib, fetchFromGitHub, ... }:
+{ flake, config, pkgs, lib, ... }:
 let
   isAtLeast24 = pkg: lib.versionAtLeast (lib.versions.majorMinor pkg.version) "2.4";
 in
@@ -14,23 +14,6 @@ in
       ./3modules/news.nix
       ./3modules/mail.nix
     ];
-
-  boot = {
-    cleanTmpDir = true;
-    kernelPackages = pkgs.linuxPackages_latest;
-    extraModulePackages = [
-      config.boot.kernelPackages.rtl88x2bu
-    ];
-  };
-
-  networking = {
-    hostName = "nixos";
-    networkmanager.enable = true;
-    useDHCP = false;
-    interfaces.eno1.useDHCP = true;
-  };
-
-  time.timeZone = "Europe/Berlin";
 
   nix = {
     buildCores = 0;
@@ -54,9 +37,31 @@ in
   nixpkgs = {
     config = {
       allowUnfree = true;
+      packageOverrides = pkgs: {
+        unstable = import <nixos-unstable> {
+          config = config.nixpkgs.config;
+        };
+      };
     };
     overlays = lib.mkBefore (import ./4pkgs { inherit flake; });
   };
+
+  boot = {
+    cleanTmpDir = true;
+    kernelPackages = with pkgs; unstable.linuxPackages_latest;
+    extraModulePackages = [
+      config.boot.kernelPackages.rtl88x2bu
+    ];
+  };
+
+  networking = {
+    hostName = "nixos";
+    networkmanager.enable = true;
+    useDHCP = false;
+    interfaces.eno1.useDHCP = true;
+  };
+
+  time.timeZone = "Europe/Berlin";
 
   services = {
     xserver = {
@@ -81,7 +86,6 @@ in
   };
 
   environment.systemPackages = with pkgs; let
-    unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
     pfirefox = writeShellScriptBin "pfirefox" ''
       firefox --private-window
     '';
@@ -109,6 +113,7 @@ in
     skim
     exa
     delta
+    unstable.difftastic
     bat
     R
     tig
@@ -118,10 +123,13 @@ in
     ctags
     unstable.vim
     neovim-nightly
-    luajit
-    luajitPackages.luacheck
+    unstable.luajit
+    unstable.luajitPackages.luacheck
     unstable.stylua
     sumneko-lua-language-server
+
+    nodejs
+    unstable.tree-sitter
 
     # kbd
     tmux
@@ -169,6 +177,7 @@ in
     valgrind
     autoconf
     autoconf-archive
+    examiner
 
     sqlite
     sqlitebrowser

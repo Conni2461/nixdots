@@ -2,6 +2,7 @@
 {
   hardware = {
     nvidia.powerManagement.enable = true;
+    nvidia.package = with pkgs; unstable.linuxPackages_latest.nvidiaPackages.stable;
     opengl = {
       enable = true;
       setLdLibraryPath = true;
