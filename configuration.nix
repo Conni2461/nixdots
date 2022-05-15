@@ -13,6 +13,7 @@ in
       ./2configs/dwm.nix
       ./2configs/gnome.nix
       ./2configs/virt.nix
+      ./2configs/home.nix
       ./3modules/news.nix
       ./3modules/mail.nix
     ];
