@@ -49,7 +49,7 @@ in
 
   boot = {
     cleanTmpDir = true;
-    kernelPackages = with pkgs; unstable.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_latest;
     extraModulePackages = [
       config.boot.kernelPackages.rtl88x2bu
     ];
@@ -198,6 +198,7 @@ in
 
     gnupg
     gopass
+    bitwarden
 
     unstable.discord
     firefox
@@ -212,6 +213,7 @@ in
     zathura
     piper
     mangohud
+    unstable.lutris
 
     xdg-utils
     sxiv
