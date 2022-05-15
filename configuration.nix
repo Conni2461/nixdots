@@ -11,6 +11,7 @@ in
       ./1systems/pipewire.nix
       ./1systems/bluetooth.nix
       ./2configs/dwm.nix
+      ./2configs/gnome.nix
       ./2configs/virt.nix
       ./3modules/news.nix
       ./3modules/mail.nix
