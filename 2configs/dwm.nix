@@ -6,24 +6,24 @@
         src = super.fetchFromGitHub {
           owner = "conni2461";
           repo = "dwm";
-          rev = "26ee48f07290bb72fa61543c40df47472f574fe8";
-          sha256 = "sha256:0ck20134q7gk0xflabhzcfnkz35avr51r8rn8ajrabj1bb4px428";
+          rev = "493eeb1fd976ee82134a20cecde0da10d92251c2";
+          hash = "sha256-3NLZNGkfh5SrtdZYEFROLJDitLGGSI5Cy5JLggO5ato=";
         };
       });
       dmenu = super.dmenu.overrideAttrs (_: {
         src = super.fetchFromGitHub {
           owner = "conni2461";
           repo = "dmenu";
-          rev = "517c0d23438278cef4fc1fc2c01705235bdffaef";
-          sha256 = "sha256:1m16vyq71wkky2cjy8438izhri6yykh0wfxvdzr751srzaz6fi7i";
+          rev = "a1a35a8a0352008d1148f4dcb4ec4ff488ce1842";
+          hash = "sha256-+4R/hguk5aD7HZfUgc/v67NiHUPJ+Clep2UrwwrfaPg=";
         };
       });
       st = super.st.overrideAttrs (oldAttrs: rec {
         src = super.fetchFromGitHub {
           owner = "conni2461";
           repo = "st";
-          rev = "b4ee37c2af469b5f03beae3ddce674c9ca0933de";
-          sha256 = "sha256:01z7qgni59c7pqcjd9gdz0bcrrdgiby4fzn4w9x48caqg4b9f94w";
+          rev = "51edfa5e7db51b11ee4ad0f471b4b7c7572e6a38";
+          hash = "sha256-YY6gkTV4jxRKnjOaebVUs0rqqRvyIA+H7Z+jT6o72t4=";
         };
         buildInputs = with pkgs; oldAttrs.buildInputs ++ [ harfbuzz ];
       });
@@ -32,7 +32,7 @@
           owner = "conni2461";
           repo = "slock";
           rev = "bded8aa5889386c68ad9ab0b40f0ca7d905c3046";
-          sha256 = "sha256:0ya0fiv7i8asb2r0qcqgrxyb0xm48lwbvqh14jx10mhv1g3ds493";
+          hash = "sha256-IxHdxgsbVhC6JAHivThFpHawfM8PMwyyWFqheHZ0QHk=";
         };
         buildInputs = with pkgs; oldAttrs.buildInputs ++ [
           xorg.libXinerama
