@@ -9,7 +9,7 @@
 
       echo 🔃 > ~/.config/newsboat/.update
       ${pkgs.libnotify}/bin/notify-send "Updating RSS feeds..."
-      ${pkgs.newsboat}/bin/newsboat -x reload
+      ${pkgs.unstable.newsboat}/bin/newsboat -x reload
       rm -f ~/.config/newsboat/.update
 
       feeds=$(${pkgs.sqlite}/bin/sqlite3 ~/.local/share/newsboat/cache.db "SELECT rss_feed.title FROM rss_feed;")
@@ -30,6 +30,6 @@
   };
 
   environment.systemPackages = with pkgs; [
-    newsboat
+    unstable.newsboat
   ];
 }
