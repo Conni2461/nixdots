@@ -81,5 +81,7 @@
       defaultCacheTtl = 34560000;
       maxCacheTtl = 34560000;
     };
+
+    xsession.numlock.enable = true;
   };
 }
