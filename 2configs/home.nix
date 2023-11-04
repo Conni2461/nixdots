@@ -72,8 +72,9 @@
         pull = { rebase = true; };
         diff = { tool = "vimdiff3"; };
       };
-    };
 
+      ignores = [ "tags" ".ctagsignore" ];
+    };
 
     services.gpg-agent = {
       enable = true;
