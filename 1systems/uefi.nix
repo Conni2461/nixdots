@@ -1,12 +1,7 @@
 { lib, ... }:
 {
   boot.loader = {
-    grub = {
-      enable = true;
-      splashImage = null;
-      device = "nodev";
-      efiSupport = true;
-    };
+    systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
   };
 }
