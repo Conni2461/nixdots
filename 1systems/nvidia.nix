@@ -16,9 +16,12 @@
         Option         "Xinerama" "0"
       '';
       screenSection = ''
-        Option         "nvidiaXineramaInfoOrder" "DFP-1"
-        Option         "metamodes" "HDMI-0: 1920x1080 +0+360 {ForceCompositionPipeline=On}, DP-0: 2560x1440 +1920+0 {ForceCompositionPipeline=On}"
-        Option         "AllowIndirectGLXProtocol" "off"
+        Option         "nvidiaXineramaInfoOrder" "DFP-3"
+        Option         "metamodes" "DP-2: 2560x1440_240 +2560+0 {ForceCompositionPipeline=On, ForceFullCompositionPipeline=On}, DP-0: 2560x1440_75 +0+0 {ForceCompositionPipeline=On, ForceFullCompositionPipeline=On}"
+        Option         "SLI" "Off"
+        Option         "MultiGPU" "Off"
+        Option         "BaseMosaic" "off"
+        Option         "RandRRotation" "on"
       '';
     };
   };
