@@ -1,4 +1,21 @@
-{ pkgs, fetchFromGitHub, ... }:
+{ pkgs, ... }: let
+  ministatus = pkgs.rustPlatform.buildRustPackage rec {
+    pname = "ministatus";
+    version = "unstable-2023-22-11";
+
+    src = pkgs.fetchFromGitHub {
+      owner = "conni2461";
+      repo = "ministatus";
+      rev = "fb7c7c211dc32fc521d25369f2c82a174cc1923b";
+      hash = "sha256-v10G9l35YCANN9Ky+XbW3dtdRbRgEPPE7hKeSl83Jmk=";
+    };
+
+    cargoHash = "sha256-QsHHSld+jCjvQ0LRXovAvNj4BUN3Wyv0Pn+EPpOaNlc=";
+
+    nativeBuildInputs = with pkgs; [ pkg-config ];
+    buildInputs = with pkgs; [ xorg.libX11 sqlite openssl libpulseaudio ];
+  };
+in
 {
   nixpkgs.overlays = [
     (self: super: {
@@ -71,6 +88,7 @@
     dmenu
     st
     clipmenu
+    ministatus
   ];
   environment.extraInit = ''
     xset r rate 300 50
